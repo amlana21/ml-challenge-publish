@@ -1,0 +1,9 @@
+Flask
+pandas
+matplotlib
+scipy
+sklearn
+requests
+Flask-Cors
+tables
+gunicorn

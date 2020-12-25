@@ -1,0 +1,12 @@
+version: '2.0'
+
+services:
+  nightlyjob:
+    image: <api_image>
+    environment:
+      - "INPUTMOVIESFILE=data_files/movies.csv"
+      - INPUTRATINGSFILE=data_files/ratings.csv
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./data_files:/home/recombackendapp/data_files

@@ -1,0 +1,50 @@
+name: Deploy_ML_Backend
+
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@main
+
+        - name: Login to private registry
+          uses: actions-hub/docker/login@master
+          env:
+            DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+            DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+            DOCKER_REGISTRY_URL: registry.gitlab.com
+        - name: Build :1.0
+          if: success()
+          run: docker build -t <api_image> .
+        - name: Push to docker registry :1.0
+          if: success()
+          uses: actions-hub/docker@master
+          with:
+            args: push <api_image>
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@main
+
+        - name: set context
+          uses: azure/k8s-set-context@v1
+          with:
+            method: kubeconfig
+            kubeconfig: ${{ secrets.KUBECONFIG }} 
+            context: <context_name>  
+          id: setcontext
+
+        - name: deploy
+          uses: Azure/k8s-deploy@v1.3
+          with:
+            manifests: |
+                kube_deploy.yml
+            namespace: recomapins
+            kubectl-version: 'latest'

@@ -1,0 +1,138 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: recomapins
+
+---
+# secret to pull image
+apiVersion: v1
+kind: Secret
+metadata:
+  name: appregistrykey
+  namespace: recomapins
+data:
+  .dockerconfigjson: <base64_json>
+type: kubernetes.io/dockerconfigjson
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data-files-vol
+  namespace: recomapins
+  labels:
+    type: local
+spec:
+  storageClassName: normal
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data"
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-file-vol-claim
+  namespace: recomapins
+spec:
+  storageClassName: normal
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recom-app-api
+  namespace: recomapins
+  labels:
+    app: recomapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recomapp
+  template:
+    metadata:
+      labels:
+        app: recomapp
+    spec:
+      imagePullSecrets:
+        - name: appregistrykey
+      volumes:
+        - name: data-files
+          persistentVolumeClaim:
+            claimName: data-file-vol-claim
+      initContainers:
+        - name: init-myservice
+          image: amazon/aws-cli
+          args: ["s3","cp","s3://<data_bucket>",".","--recursive"]
+          env:
+          - name: AWS_ACCESS_KEY_ID
+            value: <aws_access_key_id>
+          - name: AWS_SECRET_ACCESS_KEY
+            value: <aws_secret_key>
+          - name: AWS_DEFAULT_REGION
+            value: "us-east-1"
+          volumeMounts:
+            - mountPath: "/aws"
+              name: data-files
+      containers:
+      - name: recomapp
+        image: <api_image>
+        env:
+            - name: INPUTMOVIESFILE
+              value: "data_files/movies.csv"
+            - name: INPUTRATINGSFILE
+              value: "data_files/ratings.csv"
+        volumeMounts:
+          - mountPath: "/home/recombackendapp/data_files"
+            name: data-files
+        ports:
+        - containerPort: 5000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: recom-app-api-service
+  namespace: recomapins
+spec:
+  type: LoadBalancer
+  selector:
+    app: recomapp
+  ports:
+    - port: 5000
+      targetPort: 5000
+
+---
+
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: recom-api-autoscale
+  namespace: recomapins
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: recom-app-api
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50

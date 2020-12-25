@@ -1,0 +1,23 @@
+name: Deploy ML Frontend
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    container:
+      image: awsacdev/netlifycustom:2.0
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}    
+        CI: false
+    steps:
+        - uses: actions/checkout@main
+        - name: Build and Deploy
+          run: |
+            npm i
+            npm run build
+            netlify deploy --dir=build --prod

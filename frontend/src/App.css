@@ -1,0 +1,131 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+      
+  height: 100%;
+  width:100%;
+  /* min-height: 100%; */
+  margin: 0px;
+  /* overflow: hidden; */
+  /* padding-bottom: 20px; */
+  padding:0px;
+  overflow-x: hidden; 
+  overflow-y: hidden; 
+}
+
+
+div#root,div.mainContainer{
+  /* background-color: aqua; */
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background-color: #797a7e;
+background-image: url("images/mainback.png");
+
+}
+
+div.slidercontainer{
+  position: relative;
+  left:36%;
+  top:10%;
+  /* box-shadow:0px 0px 30px 1px #333333;  
+  border-radius: 5rem;
+  width: 400px; */
+  /* text-decoration: ; */
+}
+
+button.ratingsavebtn{
+  position: relative;
+  left: 500px;
+}
+
+div.resultscontainer{
+  position: relative;
+  /* left:500px; */
+  top:5%;
+  /* background-color: cadetblue; */
+  height: 70%;
+  /* padding: 500px; */
+}
+
+div.resultsimages{
+  position: relative;
+  width:100px;
+  height: 20px;
+  
+}
+
+h2.webmainlabel{
+  position: relative;
+  color: #214252;
+  font-family: 'Caveat', cursive;
+  /* margin: auto; */
+  left:29%;
+
+}
+
+
+
+/*  ############################################################################################################################### */
+/*  #################################################style for mobile########################################################### */
+@media screen and (max-width: 800px) {
+
+  div.mainContainer{
+    display:none
+  }
+
+  div.mobmainContainer{
+    /* background-color: aqua; */
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    background-color: #797a7e;
+  background-image: url("images/mainback.png");
+  
+  }
+
+  h2.mobmainlabel{
+    position: relative;
+    color: #214252;
+    font-family: 'Caveat', cursive;
+    /* margin: auto; */
+    /* left:5%; */
+    /* top:5%; */
+    left: 10%;
+  
+  }
+
+  div.mobslidercontainer{
+    position: relative;
+    /* margin: auto; */
+    left:2%;
+    top:2%;
+    /* box-shadow:0px 0px 30px 1px #333333;  
+    border-radius: 5rem;
+    width: 400px; */
+    /* text-decoration: ; */
+  }
+
+  button.mobratingsavebtn{
+    position: relative;
+    left: 500px;
+    /* background-color: aliceblue; */
+  }
+
+  div.mobresultscontainer{
+    position: relative;
+    /* left:500px; */
+    top:2%;
+    /* background-color: cadetblue; */
+    height: 70%;
+    /* padding: 500px; */
+  }
+
+
+
+}
+/*  ############################################################################################################################### */
+/*  #################################################style for mobile########################################################### */
