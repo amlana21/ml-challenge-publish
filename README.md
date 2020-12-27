@@ -4,7 +4,16 @@ This post describes about how I built a Movie recommender system (similar to Net
 
 At high level a movie recommender system is just what the name says. It will recommend you movies to watch based on your previous likes and dislikes. From end user perspective that's how simple it is. But in backend there are multiple algorithms and scripts in play to generate the recommendations. I will be going through an algorithm in this post, which I built for the system. I will go into more detail about the recommender system in post below.
 
-This will be a highly technical post and I will try to explain the functional components in detail. All the code files are available on my GitHub repo:  <a href="https://github.com/amlana21/ml-challenge-publish" target="_blank">Here</a>
+This will be a highly technical post and I will try to explain the functional components in detail. All the code files are available on my GitHub repo:  <a href="https://github.com/amlana21/ml-challenge-publish" target="_blank">Here</a>  
+
+## Demo App  
+
+I have deployed a demo app to show a sample of how the algorithm will work and show recommendations. The demo can be accessed <a href="https://amlansmlchallenge.ml" target="_blank">Here</a>.  
+
+Few points about the demo:  
+- Since I am using free tier for each components, I couldnt give great capacity to the web app backend. So the app may behave slow for some of you  
+- Due to low capacity the data used for the algorith is also not a very big dataset. So the recommendations may not be that accurate. But the backend ML algorthm is the same as I describe below  
+- I am using Collaborative filtering method for the backend API to provide recommendations
 
 ## Pre-Requisites  
 There are few pre-requisites which I had to take care to complete this setup and overall understand the process. If you want to setup and deploy this model, you will have to make sure these are available to you:  

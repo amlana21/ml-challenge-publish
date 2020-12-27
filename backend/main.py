@@ -10,6 +10,7 @@ app= Flask(__name__)
 CORS(app, supports_credentials=True)
 
 movies_df = pd.read_csv(os.getenv('INPUTMOVIESFILE'))
+random_movies_df = pd.read_csv(os.getenv('INPUTMOVIESFILE'))
 ratings_df = pd.read_csv(os.getenv('INPUTRATINGSFILE'))
 movies_df['year'] = movies_df.title.str.extract('(\(\d\d\d\d\))', expand=False)
 movies_df['year'] = movies_df.year.str.extract('(\d\d\d\d)', expand=False)
@@ -31,7 +32,7 @@ def getrandommovies():
     try:
         args=request.args
         nummoviees=int(args['count'])
-        ids=getrandomnames(nummoviees,movies_df)
+        ids=getrandomnames(nummoviees,random_movies_df)
         resp=make_response(jsonify(ids=ids))
     except Exception as e:
         resp = make_response(jsonify(error='an error occured in getting response'),500)

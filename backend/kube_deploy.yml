@@ -49,6 +49,40 @@ spec:
 
 ---
 
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: file-download-job
+  namespace: recomapins
+spec:
+  completions: 1
+  template:
+    spec:
+      volumes:
+        - name: download-files
+          persistentVolumeClaim:
+            claimName: data-file-vol-claim
+      containers:
+      - name: files-container
+        image: amazon/aws-cli
+        args: ["s3","cp","s3://<data_bucket>",".","--recursive"]
+        env:
+        - name: AWS_ACCESS_KEY_ID
+          value: <aws_access_key_id>
+        - name: AWS_SECRET_ACCESS_KEY
+          value: <aws_secret_key>
+        - name: AWS_DEFAULT_REGION
+          value: "us-east-1"
+        volumeMounts:
+          - mountPath: "/aws"
+            name: download-files
+      restartPolicy: Never
+  backoffLimit: 4
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -74,26 +108,28 @@ spec:
             claimName: data-file-vol-claim
       initContainers:
         - name: init-myservice
-          image: amazon/aws-cli
-          args: ["s3","cp","s3://<data_bucket>",".","--recursive"]
-          env:
-          - name: AWS_ACCESS_KEY_ID
-            value: <aws_access_key_id>
-          - name: AWS_SECRET_ACCESS_KEY
-            value: <aws_secret_key>
-          - name: AWS_DEFAULT_REGION
-            value: "us-east-1"
-          volumeMounts:
-            - mountPath: "/aws"
-              name: data-files
+          image: busybox
+          args:
+            - /bin/sh
+            - -c
+            - "sleep 30"
       containers:
       - name: recomapp
         image: <api_image>
+        livenessProbe:
+          exec:
+            command:
+            - cat
+            - data_files/movies.csv
+          initialDelaySeconds: 10
+          periodSeconds: 5
         env:
             - name: INPUTMOVIESFILE
               value: "data_files/movies.csv"
             - name: INPUTRATINGSFILE
               value: "data_files/ratings.csv"
+            - name: PYTHONUNBUFFERED
+              value: '1'
         volumeMounts:
           - mountPath: "/home/recombackendapp/data_files"
             name: data-files
@@ -112,7 +148,7 @@ spec:
   selector:
     app: recomapp
   ports:
-    - port: 5000
+    - port: 80
       targetPort: 5000
 
 ---
