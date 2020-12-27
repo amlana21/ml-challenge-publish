@@ -45,8 +45,8 @@ Let me go through each component and explain what they do.
   ### Web App  
   This is the front end of the system. I built a REACT web app to serve as the front end to users and show the recommendations to the users. The frontend calls the backend API endpoints for various processing tasks. I will come to the API details in next section. This is a simple React app with the API details passed as environment variables. These are the overall functions happening on the front end:  
 
-  ![frontscreen1](postimages/inpost/frontscreen1.png)  <br/> 
-  ![frontscreen2](postimages/inpost/frontscreen2.png)  <br/> 
+  ![frontscreen1](postimages/inpost/frontscreen1_1.png)  <br/> 
+  ![frontscreen2](postimages/inpost/frontscreen2_1.png)  <br/> 
 
   - When you open the app you are presented with few movies to rate on  
   - You cycle through the movies and rate each one based on your likes or dislikes  
