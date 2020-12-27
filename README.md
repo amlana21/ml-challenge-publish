@@ -1,19 +1,20 @@
 # A Movie Recommender Engine using K-Means and Collaborative Filtering  
 
-This post describes about how I built a Movie recommender system (similar to Netflix). I built this system in response to the Cloud Challenge from Acloudguru. But then I thought why not have an end to end implementation of the system along with a Web app and a CI/CD deployment process to deploy the Machine learning model. Hopefully I will be able to help someone learn the concepts and fulfill the challenge requirements too. This is my first attempt on building something based on Machine learning so I apologize if there are some gaps in my understanding of the algorithms and how its executed.  
+This post describes about how I built a Movie recommender system (similar to Netflix). I built this system in response to the Cloud Challenge from Acloudguru (<a href="https://acloudguru.com/blog/engineering/cloudguruchallenge-machine-learning-on-aws" target="_blank">Here</a>). But then I thought why not have an end to end implementation of the system along with a Web app and a CI/CD deployment process to deploy the Machine learning model. Hopefully I will be able to help someone learn the concepts and fulfill the challenge requirements too. This is my first attempt on building something based on Machine learning so I apologize if there are some gaps in my understanding of the algorithms and how its executed. I write about other cloud related topics <a href="https://amlanscloud.com" target="_blank">Here</a>   
 
 At high level a movie recommender system is just what the name says. It will recommend you movies to watch based on your previous likes and dislikes. From end user perspective that's how simple it is. But in backend there are multiple algorithms and scripts in play to generate the recommendations. I will be going through an algorithm in this post, which I built for the system. I will go into more detail about the recommender system in post below.
 
-This will be a highly technical post and I will try to explain the functional components in detail. All the code files are available on my GitHub repo:  <a href="https://github.com/amlana21/ml-challenge-publish" target="_blank">Here</a>  
+All the code files are available on my GitHub repo:  <a href="https://github.com/amlana21/ml-challenge-publish" target="_blank">Here</a>  
 
 ## Demo App  
 
 I have deployed a demo app to show a sample of how the algorithm will work and show recommendations. The demo can be accessed <a href="https://amlansmlchallenge.ml" target="_blank">Here</a>.  
 
 Few points about the demo:  
-- Since I am using free tier for each components, I couldnt give great capacity to the web app backend. So the app may behave slow for some of you  
-- Due to low capacity the data used for the algorith is also not a very big dataset. So the recommendations may not be that accurate. But the backend ML algorthm is the same as I describe below  
-- I am using Collaborative filtering method for the backend API to provide recommendations
+- Since I am using free tier for each components, I couldn't give great capacity to the web app backend. So the app may behave slow for some of you  
+- Due to low capacity the data used for the algorithm is also not a very big dataset. So the recommendations may not be that accurate. But the backend ML algorithm is the same as I describe below  
+- I am using Collaborative filtering method for the backend API to provide recommendations  
+- Since its a short dataset, some inputs wont match to any proper recommendations. In that case the app returns a default recommendation. You may see this couple of times
 
 ## Pre-Requisites  
 There are few pre-requisites which I had to take care to complete this setup and overall understand the process. If you want to setup and deploy this model, you will have to make sure these are available to you:  
@@ -83,11 +84,11 @@ Below sections describe the two approaches for my recommender algorithms. I have
   - <em>ratings.csv: </em>List of all ratings rated by various users along with user ids
 
   ### K-Means Algorithm  
-  <iframe src='https://amlans-ml-challenge.netlify.app/mlchallengekmeans.html' height="1000px" width="100%"></iframe>
+  <iframe src='https://amlans-ml-challenge-notebooks.netlify.app/mlchallengekmeans.html' height="1000px" width="100%"></iframe>
 
 
   ### Collaborative Filtering Algorithm  
-  <iframe src='https://amlans-ml-challenge.netlify.app/mlchallengecollab.html' height="1000px" width="100%"></iframe>
+  <iframe src='https://amlans-ml-challenge-notebooks.netlify.app/mlchallengecollab.html' height="1000px" width="100%"></iframe>
 
 
 ## Deploying the Model and Frontend  

@@ -68,13 +68,9 @@ spec:
       - name: files-container
         image: amazon/aws-cli
         args: ["s3","cp","s3://<data_bucket>",".","--recursive"]
-        env:
-        - name: AWS_ACCESS_KEY_ID
-          value: <aws_access_key_id>
-        - name: AWS_SECRET_ACCESS_KEY
-          value: <aws_secret_key>
-        - name: AWS_DEFAULT_REGION
-          value: "us-east-1"
+        envFrom:
+        - secretRef:
+            name: awskeys
         volumeMounts:
           - mountPath: "/aws"
             name: download-files
